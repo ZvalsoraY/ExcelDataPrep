@@ -35,22 +35,27 @@ namespace DataPrep
         {
             //XSSFWorkbook wb1 = null;
 
-            using (var file = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
+            using (var stream = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
             {
                 
                 //wb1 = new XSSFWorkbook(file);
                 var wb = new XSSFWorkbook();
                 var sheet = wb.CreateSheet("RepairScope");
                 //creating cell style for header
+                //var cellStyle =
                 //var cellStyle = CreateCellStyleForHeader(wb);
+
+                //filling the header
+                var row = sheet.CreateRow(0);
 
 
 
                 //wb1.GetSheetAt(0).GetRow(0).GetCell(0).SetCellValue("Sample");
                 //file.
-                file.Close();
+                wb.Write(stream);
+                //file.Close();
             }
-            
+
 
             //using (var file2 = new FileStream(@"C:\Users\Master\Documents\C_sharp\Work\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
             //{
