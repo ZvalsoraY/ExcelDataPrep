@@ -37,17 +37,23 @@ namespace DataPrep
 
             using (var stream = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
             {
-                
+            //https://stackoverflow.com/questions/47793744/generate-excel-with-merged-header-using-npoi
                 //wb1 = new XSSFWorkbook(file);
                 var wb = new XSSFWorkbook();
-                var sheet = wb.CreateSheet("RepairScope");
+                var sheet = wb.CreateSheet("Test wall");
                 //creating cell style for header
                 //var cellStyle =
                 //var cellStyle = CreateCellStyleForHeader(wb);
 
                 //filling the header
                 var row = sheet.CreateRow(0);
-
+                row.CreateCell(0, CellType.String).SetCellValue("x");
+                row.CreateCell(1, CellType.String).SetCellValue("y");
+                row.CreateCell(2, CellType.String).SetCellValue("z");
+                row.CreateCell(3, CellType.String).SetCellValue("Hx");
+                row.CreateCell(4, CellType.String).SetCellValue("Hy");
+                row.CreateCell(5, CellType.String).SetCellValue("Hz");
+                row.CreateCell(6, CellType.String).SetCellValue("Hsum");
 
 
                 //wb1.GetSheetAt(0).GetRow(0).GetCell(0).SetCellValue("Sample");
