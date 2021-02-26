@@ -40,19 +40,22 @@ namespace DataPrep
             //System.Console.WriteLine("{0} words in text:", words.Length);
 
 
-            var swords = File.ReadAllText(fileName);
-            var res = swords.Split('\t')
-                .Select(p => Regex.Split(p, " "))
-                .ToArray();
+            //var swords = File.ReadAllText(fileName);
+            //var res = swords.Split('\t')
+            //    .Select(p => Regex.Split(p, " "))
+            //    .ToArray();
+            var res = File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
+
+
             //foreach (string[] s in res)
             //{
             //    foreach (string r in s)
             //    {
-            //        System.Console.Write(r);
+            //        System.Console.Write("!! " + r);
             //        //Convert.ToDouble(r);
             //    }
+            //    //System.Console.WriteLine("dddd");
             //    System.Console.WriteLine();
-
             //}
 
 
@@ -84,7 +87,7 @@ namespace DataPrep
                 //var cellStyle =
                 //var cellStyle = CreateCellStyleForHeader(wb);
 
-                //filling the header
+                
                 var row = sheet.CreateRow(0);
                 row.CreateCell(0, CellType.String).SetCellValue("x");
                 row.CreateCell(1, CellType.String).SetCellValue("y");
@@ -95,6 +98,32 @@ namespace DataPrep
                 row.CreateCell(6, CellType.String).SetCellValue("Hsum");
                 row.Cells[0].CellStyle = bStylehead;
 
+                //filling the data
+                var rowsCounter = 1;
+
+                string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
+                var fileData = ReadFile(fileName);
+
+                //var row = sheet.CreateRow(0);
+                //foreach(var rowData in fileData)
+                //{
+                //    var rowD = sheet.CreateRow(rowsCounter);
+                //    foreach(string cellData in rowData)
+                //    {
+
+                //    }
+                   
+
+                //}
+
+                //for (var j = 0; j < _header.Length; j++)
+                //{
+                //    var cell = row.CreateCell(j);
+                //    var richTextString =
+                //        (XSSFRichTextString)wb.GetCreationHelper().CreateRichTextString(_header[j]);
+                //    if (richTextString != null) cell.SetCellValue(richTextString);
+                //    cell.CellStyle = cellStyle;
+                //}
                 //var cra = new NPOI.SS.Util.CellRangeAddress(0, 0, 0, 6);
                 //cra.
 
