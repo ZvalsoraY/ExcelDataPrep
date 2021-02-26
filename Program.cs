@@ -96,7 +96,7 @@ namespace DataPrep
                     //rowD.CreateCell(0, CellType.String).SetCellValue(rowData.Length);
                     for (int i = 1; i < rowData.Length; i++)
                     {
-                        rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(rowData.GetValue(i).ToString().Replace(@".", @","));
+                        rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(Double.Parse(rowData.GetValue(i).ToString().Replace(@".", @",")));
                     }
                     //foreach (var cellData in rowData)
                     //{
