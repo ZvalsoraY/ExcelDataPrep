@@ -29,23 +29,7 @@ namespace DataPrep
 
         static Array ReadFile(string fileName)
         {
-
-            //char[] delimiterChars = { '!', ' ','\t' };
-
-            //string[] words = File.ReadAllText(fileName).Split(delimiterChars);
-            //foreach (string s in words)
-            //{
-            //    System.Console.WriteLine(s);
-            //}
-            //System.Console.WriteLine("{0} words in text:", words.Length);
-
-
-            //var swords = File.ReadAllText(fileName);
-            //var res = swords.Split('\t')
-            //    .Select(p => Regex.Split(p, " "))
-            //    .ToArray();
-            var res = File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
-
+            //var res = File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
 
             //foreach (string[] s in res)
             //{
@@ -59,9 +43,10 @@ namespace DataPrep
             //}
 
 
-            return res;
+            //return res;
             //Console.WriteLine(File.ReadAllText(fileName));
             //return File.ReadAllText(fileName);
+            return File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
 
         }
 
@@ -105,16 +90,21 @@ namespace DataPrep
                 var fileData = ReadFile(fileName);
 
                 //var row = sheet.CreateRow(0);
-                //foreach(var rowData in fileData)
-                //{
-                //    var rowD = sheet.CreateRow(rowsCounter);
-                //    foreach(string cellData in rowData)
-                //    {
+                foreach (Array rowData in fileData)
+                {
+                    var rowD = sheet.CreateRow(rowsCounter++);
+                    //rowD.CreateCell(0, CellType.String).SetCellValue(rowData.Length);
+                    for (int i = 1; i < rowData.Length; i++)
+                    {
+                        rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(rowData.GetValue(i).ToString().Replace(@".", @","));
+                    }
+                    //foreach (var cellData in rowData)
+                    //{
 
-                //    }
-                   
+                    //}
 
-                //}
+
+                }
 
                 //for (var j = 0; j < _header.Length; j++)
                 //{
