@@ -56,7 +56,8 @@ namespace DataPrep
 
             using (var stream = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
             {
-            //https://stackoverflow.com/questions/47793744/generate-excel-with-merged-header-using-npoi
+                //https://stackoverflow.com/questions/47793744/generate-excel-with-merged-header-using-npoi
+                //https://stackoverflow.com/questions/32723483/adding-a-specific-autofilter-on-a-column
                 //wb1 = new XSSFWorkbook(file);
                 var wb = new XSSFWorkbook();
                 var sheet = wb.CreateSheet("Test wall");
@@ -98,37 +99,14 @@ namespace DataPrep
                     {
                         rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(Double.Parse(rowData.GetValue(i).ToString().Replace(@".", @",")));
                     }
-                    //foreach (var cellData in rowData)
-                    //{
-
-                    //}
-
-
+                    
                 }
-
-                //for (var j = 0; j < _header.Length; j++)
-                //{
-                //    var cell = row.CreateCell(j);
-                //    var richTextString =
-                //        (XSSFRichTextString)wb.GetCreationHelper().CreateRichTextString(_header[j]);
-                //    if (richTextString != null) cell.SetCellValue(richTextString);
-                //    cell.CellStyle = cellStyle;
-                //}
-                //var cra = new NPOI.SS.Util.CellRangeAddress(0, 0, 0, 6);
-                //cra.
-
-                //wb1.GetSheetAt(0).GetRow(0).GetCell(0).SetCellValue("Sample");
-                //file.
+                sheet.SetAutoFilter(CellRangeAddress.ValueOf("A:C"));
+                
                 wb.Write(stream);
                 //file.Close();
             }
 
-
-            //using (var file2 = new FileStream(@"C:\Users\Master\Documents\C_sharp\Work\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
-            //{
-            //    wb1.Write(file2);
-            //    file2.Close();
-            //}
 
         }
             
