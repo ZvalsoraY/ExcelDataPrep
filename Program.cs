@@ -13,6 +13,7 @@ using NPOI.SS.UserModel;
 using NPOI.SS.Util;
 using NPOI.HSSF.Util;
 using System.Text.RegularExpressions;
+using System.Globalization;
 
 namespace DataPrep
 {
@@ -22,9 +23,18 @@ namespace DataPrep
         {
             string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
             ReadFile(fileName);
-            //Console.WriteLine(ReadFile(fileName));
-            CreateExcel();
-            Console.Read();
+            //FileArray(fileName);
+           
+            foreach (var item in FileArray(fileName))
+            {
+                //Console.Write(" ");
+                foreach (var s in item)
+                Console.Write(s);
+                Console.WriteLine();
+            }
+                ////Console.WriteLine(ReadFile(fileName));
+                //CreateExcel();
+                Console.Read();
         }
 
         static Array ReadFile(string fileName)
@@ -50,6 +60,27 @@ namespace DataPrep
 
         }
 
+        static double[][] FileArray(string fileName)
+        {
+            var lines = File.ReadAllLines(fileName);
+            //double[][] resArray = new double[lines.Count()][];
+            var resArray = new double[lines.Count()][];
+            for (int i = 0; i < resArray.Length; i++)
+            {
+                string[] stringArray = lines[i].Split(' ','!').ToArray();
+                //double[] doubleArray = stringArray.Select<string, double>(s => Double.Parse(s)).ToArray<double>();
+
+                for (int j = 2; j < stringArray.Length; j++)
+                {
+                    resArray[i] = new double[7];
+                    //var a = double.Parse(stringArray[j], CultureInfo.InvariantCulture);
+                    resArray[i][j - 2] = double.Parse(stringArray[j], CultureInfo.InvariantCulture);
+                    //Console.Write(stringArray[j] + "\t");
+                }
+            }
+            return resArray;
+        }
+        
         static void CreateExcel()
         {
             //XSSFWorkbook wb1 = null;
@@ -90,6 +121,7 @@ namespace DataPrep
                 string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
                 var fileData = ReadFile(fileName);
 
+                
                 //var row = sheet.CreateRow(0);
                 foreach (Array rowData in fileData)
                 {
@@ -101,7 +133,7 @@ namespace DataPrep
                     }
                     
                 }
-                sheet.SetAutoFilter(CellRangeAddress.ValueOf("A:C"));
+                //sheet.SetAutoFilter(CellRangeAddress.ValueOf("A:C"));
                 
                 wb.Write(stream);
                 //file.Close();
