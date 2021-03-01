@@ -26,16 +26,11 @@ namespace DataPrep
 
             //FileArray(fileName);
             FileDoubleArrayList(fileName);
-            foreach (var item in FileDoubleArray(fileName))
-            {
-                //Console.Write(" ");
-                foreach (var s in item)
-                Console.Write(s);
-                Console.WriteLine();
-            }
-                ////Console.WriteLine(ReadFile(fileName));
-                //CreateExcel();
-                Console.Read();
+            FileDoubleArray(fileName);
+            
+            ////Console.WriteLine(ReadFile(fileName));
+            //CreateExcel();
+            Console.Read();
         }
 
         static Array ReadFile(string fileName)
@@ -74,6 +69,14 @@ namespace DataPrep
                     resArray[i][j - 2] = double.Parse(stringArray[j], CultureInfo.InvariantCulture);
                 }
             }
+            //foreach (var item in resArray)
+            //{
+            //    //Console.Write(" ");
+            //    foreach (var s in item)
+            //        Console.Write(s);
+            //    Console.WriteLine();
+            //}
+
             return resArray;
         }
         static List<List<double>> FileDoubleArrayList(string fileName)
@@ -81,31 +84,28 @@ namespace DataPrep
             var resArray = new List<List<double>>();
 
             var lines = File.ReadAllLines(fileName);
-            //var resArray = new double[lines.Count()][];
             for (int i = 0; i < lines.Length; i++)
             {
                 var resString = new List<double>();
-                string[] stringArray = lines[i].Split(' ', '!').ToArray();
+                string[] stringArray = lines[i].Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 foreach (var linPer in stringArray)
                 {
-                    //resString.Add(double.Parse(linPer, CultureInfo.InvariantCulture));
-                    //resString.Add(double.TryParse(linPer, ));
-                    if (Regex.IsMatch(linPer, @"\d"))
-                        resString.Add(double.Parse(linPer, CultureInfo.InvariantCulture));
-                    //((linPerD < 5) ? ref smallArray[index] : ref largeArray[index - 5]) = 100
-                    //condition? consequent : alternative
-                }
-                
+                    resString.Add(double.Parse(linPer, CultureInfo.InvariantCulture));
+                }                
                 resArray.Add(resString);
-
+            }
+            foreach (var item in resArray)
+            {
+                foreach (var s in item)
+                    Console.Write(" " + s);
+                //Console.Write(s);
+                Console.WriteLine();
             }
             return resArray;
         }
 
 
-        //var array2 = new List<List<string>>();
-        //array2.Add(array1)
-
+       
         //static double[][] SortCoordZ(double[][] sortedArray, double zCoord = 0.0)
         //{
         //    var resArray = new double[][];
