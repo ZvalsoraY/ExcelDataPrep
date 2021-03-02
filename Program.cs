@@ -24,15 +24,27 @@ namespace DataPrep
             string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
             ReadFile(fileName);
 
-            //FileArray(fileName);
-            FileDoubleArrayList(fileName);
-            FileDoubleArray(fileName);
+            //FileDoubleArrayList(fileName);
+            //FileDoubleArray(fileName);
             
+            //selectCoordZ(FileDoubleArrayList(fileName));
+            sortByY(selectCoordZ(FileDoubleArrayList(fileName)));
+
             ////Console.WriteLine(ReadFile(fileName));
             //CreateExcel();
             Console.Read();
         }
 
+        static void consoleWriteCheck(List<List<double>> writingArray)
+        {
+            foreach (var item in writingArray)
+            {
+                foreach (var s in item)
+                    Console.Write(" " + s);
+                //Console.Write(s);
+                Console.WriteLine();
+            }
+        }
         static Array ReadFile(string fileName)
         {
             //var res = File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
@@ -94,29 +106,30 @@ namespace DataPrep
                 }                
                 resArray.Add(resString);
             }
-            foreach (var item in resArray)
+            //consoleWriteCheck(resArray);
+            return resArray;
+        }
+              
+        static List<List<double>> selectCoordZ(List<List<double>> sortedArray, double zCoord = 0.0)
+        {
+            var resArray = new List<List<double>>();
+            foreach (var tag in sortedArray)
             {
-                foreach (var s in item)
-                    Console.Write(" " + s);
-                //Console.Write(s);
-                Console.WriteLine();
+                if (tag[2] == 0) resArray.Add(tag); 
+
             }
+            //consoleWriteCheck(resArray);
             return resArray;
         }
 
-
-       
-        //static double[][] SortCoordZ(double[][] sortedArray, double zCoord = 0.0)
-        //{
-        //    var resArray = new double[][];
-        //    // for each element of external array (1st dimension) order by 4th element of jagged (2nd dimension) by ascending
-        //    //IEnumerable<double[]> resArray = from u in sortedArray
-        //    //                                 where u[2].Equals(0.0)
-        //    //                               select u;
-
-        //    return resArray;
-        //}
-        
+        static List<List<double>> sortByY(List<List<double>> inputArray)
+        {
+            var resArray = new List<List<double>>();
+            //resArray = inputArray.Sort()
+            resArray = inputArray.OrderBy(l => l[1]).ToList();
+            consoleWriteCheck(resArray);
+            return resArray;
+        }
         static void CreateExcel()
         {
             //XSSFWorkbook wb1 = null;
