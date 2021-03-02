@@ -28,10 +28,10 @@ namespace DataPrep
             //FileDoubleArray(fileName);
             
             //selectCoordZ(FileDoubleArrayList(fileName));
-            sortByY(selectCoordZ(FileDoubleArrayList(fileName)));
+            //sortByY(selectCoordZ(FileDoubleArrayList(fileName)));
 
             ////Console.WriteLine(ReadFile(fileName));
-            //CreateExcel();
+            CreateExcel(sortByY(selectCoordZ(FileDoubleArrayList(fileName))));
             Console.Read();
         }
 
@@ -47,25 +47,7 @@ namespace DataPrep
         }
         static Array ReadFile(string fileName)
         {
-            //var res = File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
-
-            //foreach (string[] s in res)
-            //{
-            //    foreach (string r in s)
-            //    {
-            //        System.Console.Write("!! " + r);
-            //        //Convert.ToDouble(r);
-            //    }
-            //    //System.Console.WriteLine("dddd");
-            //    System.Console.WriteLine();
-            //}
-
-
-            //return res;
-            //Console.WriteLine(File.ReadAllText(fileName));
-            //return File.ReadAllText(fileName);
             return File.ReadLines(fileName).Select(s => s.Split(' ')).ToArray();
-
         }
 
         static double[][] FileDoubleArray(string fileName)
@@ -102,7 +84,7 @@ namespace DataPrep
                 string[] stringArray = lines[i].Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 foreach (var linPer in stringArray)
                 {
-                    resString.Add(double.Parse(linPer, CultureInfo.InvariantCulture));
+                    resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture),2));
                 }                
                 resArray.Add(resString);
             }
@@ -130,7 +112,7 @@ namespace DataPrep
             consoleWriteCheck(resArray);
             return resArray;
         }
-        static void CreateExcel()
+        static void CreateExcel(List<List<double>> inputArray)
         {
             //XSSFWorkbook wb1 = null;
 
@@ -170,18 +152,27 @@ namespace DataPrep
                 string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
                 var fileData = ReadFile(fileName);
 
-                
-                //var row = sheet.CreateRow(0);
-                foreach (Array rowData in fileData)
+                foreach (var rowData in inputArray)
                 {
                     var rowD = sheet.CreateRow(rowsCounter++);
-                    //rowD.CreateCell(0, CellType.String).SetCellValue(rowData.Length);
-                    for (int i = 1; i < rowData.Length; i++)
+                    var dCounter = 0;
+                    foreach(var d in rowData)
                     {
-                        rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(Double.Parse(rowData.GetValue(i).ToString().Replace(@".", @",")));
+                        rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(Double.Parse(d.ToString().Replace(@".", @",")));
                     }
-                    
                 }
+                
+                ////var row = sheet.CreateRow(0);
+                //foreach (Array rowData in fileData)
+                //{
+                //    var rowD = sheet.CreateRow(rowsCounter++);
+                //    //rowD.CreateCell(0, CellType.String).SetCellValue(rowData.Length);
+                //    for (int i = 1; i < rowData.Length; i++)
+                //    {
+                //        rowD.CreateCell(i-1, CellType.Numeric).SetCellValue(Double.Parse(rowData.GetValue(i).ToString().Replace(@".", @",")));
+                //    }
+                    
+                //}
                 //sheet.SetAutoFilter(CellRangeAddress.ValueOf("A:C"));
                 
                 wb.Write(stream);
