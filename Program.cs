@@ -23,7 +23,9 @@ namespace DataPrep
         static void Main(string[] args)
         {
             string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
-            ReadFile(fileName);
+            double axisCoordinateData = 12.0;
+
+            //ReadFile(fileName);
 
             //FileDoubleArrayList(fileName);
             //FileDoubleArray(fileName);
@@ -32,8 +34,10 @@ namespace DataPrep
             //sortByY(selectCoordZ(FileDoubleArrayList(fileName)));
 
             ////Console.WriteLine(ReadFile(fileName));
-            CreateExcel(sortByY(selectCoordZ(FileDoubleArrayList(fileName))));
-            Console.Read();
+            CreateExcel(sortByY
+                (selectCoordZ
+                (FileDoubleArrayList(fileName), axisCoordinateData)), axisCoordinateData);
+            //Console.Read();
         }
 
         static void consoleWriteCheck(List<List<double>> writingArray)
@@ -76,48 +80,52 @@ namespace DataPrep
         }
         static List<List<double>> FileDoubleArrayList(string fileName)
         {
-            var resArray = new List<List<double>>();
-
+            var lLdoubleArray = new List<List<double>>();
+            //lLdoubleArray.Clear();
             var lines = File.ReadAllLines(fileName);
             for (int i = 0; i < lines.Length; i++)
             {
                 var resString = new List<double>();
+
                 string[] stringArray = lines[i].Split(new[] { ' ', '!' }, StringSplitOptions.RemoveEmptyEntries).ToArray();
                 foreach (var linPer in stringArray)
                 {
                     resString.Add(Math.Round(double.Parse(linPer, CultureInfo.InvariantCulture),2));
-                }                
-                resArray.Add(resString);
+                }
+                lLdoubleArray.Add(resString);
             }
+            
             //consoleWriteCheck(resArray);
-            return resArray;
+            return lLdoubleArray;
         }
               
-        static List<List<double>> selectCoordZ(List<List<double>> sortedArray, double zCoord = 0.0)
+        static List<List<double>> selectCoordZ(List<List<double>> arraySelectZ, double zCoord = 0.0)
         {
-            var resArray = new List<List<double>>();
-            foreach (var tag in sortedArray)
+            var zArray = new List<List<double>>();
+            zArray.Clear();
+            foreach (var tag in arraySelectZ)
             {
-                if (tag[2] == 0) resArray.Add(tag); 
-
+                //if (tag[2] == 0) resArray.Add(tag);
+                if (Math.Abs(tag[2] - zCoord) <= 0.01) zArray.Add(tag);
             }
             //consoleWriteCheck(resArray);
-            return resArray;
+            return zArray;
         }
 
-        static List<List<double>> sortByY(List<List<double>> inputArray)
+        static List<List<double>> sortByY(List<List<double>> arraySortY)
         {
-            var resArray = new List<List<double>>();
+            var arrayByY = new List<List<double>>();
             //resArray = inputArray.Sort()
-            resArray = inputArray.OrderBy(l => l[1]).ToList();
-            consoleWriteCheck(resArray);
-            return resArray;
+            arrayByY = arraySortY.OrderBy(l => l[1]).ToList();
+            //consoleWriteCheck(resArray);
+            return arrayByY;
         }
-        static void CreateExcel(List<List<double>> inputArray)
+        static void CreateExcel(List<List<double>> inputArray, double axisCoordinateData)
         {
+            string parth = $"D:\\test\\Result{axisCoordinateData.ToString()}.xlsx";
             //XSSFWorkbook wb1 = null;
-
-            using (var stream = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
+            using (var stream = new FileStream(parth, FileMode.Create, FileAccess.ReadWrite))
+            //using (var stream = new FileStream(@"D:\test\Result.xlsx", FileMode.Create, FileAccess.ReadWrite))
             {
             //https://stackoverflow.com/questions/47793744/generate-excel-with-merged-header-using-npoi
             //https://stackoverflow.com/questions/32723483/adding-a-specific-autofilter-on-a-column
@@ -204,7 +212,7 @@ namespace DataPrep
 
                 wb.Write(stream);
                 
-                //wb.Close();
+                wb.Close();
                 //file.Close();
             }
 
