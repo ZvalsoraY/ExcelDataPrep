@@ -131,75 +131,80 @@ namespace DataPrep
                 var wb = new XSSFWorkbook();
                 //var wb = new ;
                 var sheet = wb.CreateSheet("Test wall");
-                ////creating cell style for header
-                //var bStylehead = wb.CreateCellStyle();
-                //bStylehead.BorderBottom = BorderStyle.Thin;
-                //bStylehead.BorderLeft = BorderStyle.Thin;
-                //bStylehead.BorderRight = BorderStyle.Thin;
-                //bStylehead.BorderTop = BorderStyle.Thin;
-                //bStylehead.Alignment = HorizontalAlignment.Center;
-                //bStylehead.VerticalAlignment = VerticalAlignment.Center;
-                //bStylehead.FillBackgroundColor = HSSFColor.Green.Index;
-                ////var cellStyle =
-                ////var cellStyle = CreateCellStyleForHeader(wb);
+                //creating cell style for header
+                var bStylehead = wb.CreateCellStyle();
+                bStylehead.BorderBottom = BorderStyle.Thin;
+                bStylehead.BorderLeft = BorderStyle.Thin;
+                bStylehead.BorderRight = BorderStyle.Thin;
+                bStylehead.BorderTop = BorderStyle.Thin;
+                bStylehead.Alignment = HorizontalAlignment.Center;
+                bStylehead.VerticalAlignment = VerticalAlignment.Center;
+                bStylehead.FillBackgroundColor = HSSFColor.Green.Index;
+                //var cellStyle =
+                //var cellStyle = CreateCellStyleForHeader(wb);
 
 
-                //var row = sheet.CreateRow(0);
-                //row.CreateCell(0, CellType.String).SetCellValue("x");
-                //row.CreateCell(1, CellType.String).SetCellValue("y");
-                //row.CreateCell(2, CellType.String).SetCellValue("z");
-                //row.CreateCell(3, CellType.String).SetCellValue("Hx");
-                //row.CreateCell(4, CellType.String).SetCellValue("Hy");
-                //row.CreateCell(5, CellType.String).SetCellValue("Hz");
-                //row.CreateCell(6, CellType.String).SetCellValue("Hsum");
-                //row.Cells[0].CellStyle = bStylehead;
 
-                ////filling the data
-                //var rowsCounter = 1;
+                var Drawing = sheet.CreateDrawingPatriarch();
 
-                //string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
-                //var fileData = ReadFile(fileName);
-
-                //foreach (var rowData in inputArray)
-                //{
-                //    var rowD = sheet.CreateRow(rowsCounter++);
-                //    var dCounter = 0;
-                //    foreach (var d in rowData)
-                //    {
-                //        rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(Double.Parse(d.ToString().Replace(@".", @",")));
-                //    }
-                //}
-
-
-                //object[][] plotData = new object[2][];
-
-                //plotData[0] = new string[] { "A", "B", "C", "D", "E", "F", "G", "H", "I", "J" };
-                //plotData[1] = new object[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };
-
-                //IWorkbook wb = new XSSFWorkbook();
-                //ISheet sheet = new SheetBuilder(wb, plotData).Build();
-                IDrawing Drawing = sheet.CreateDrawingPatriarch();
-
-                IClientAnchor anchor = Drawing.CreateAnchor(0, 0, 0, 0, 8, 1, 18, 16);
-                IChart chart = Drawing.CreateChart(anchor);
-
+                //IClientAnchor anchor = Drawing.CreateAnchor(0, 0, 0, 0, 8, 1, 18, 16);
+                var anchor = Drawing.CreateAnchor(0, 0, 0, 0, 8, 1, 18, 16);
+                var chart = Drawing.CreateChart(anchor);
+                //var chart = 
+                //IChart chart = Drawing.CreateChart(anchor);
                 IChartAxis bottomAxis = chart.ChartAxisFactory.CreateCategoryAxis(AxisPosition.Bottom);
                 IChartAxis leftAxis = chart.ChartAxisFactory.CreateValueAxis(AxisPosition.Left);
 
                 var chartData =
                         chart.ChartDataFactory.CreateLineChartData<double, double>();
-
-                IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf("A1:G1"));
-                IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf("A2:G2"));
+                var lenCellRange = inputArray.Count + 1;
+                IChartDataSource<double> xs = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"B2:B{lenCellRange}"));
+                IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf($"G2:G{lenCellRange}"));
+                //IChartDataSource<double> ys = DataSources.FromNumericCellRange(sheet, CellRangeAddress.ValueOf("G2:G20"));
                 var series = chartData.AddSeries(xs, ys);
                 series.SetTitle("test");
+                //chart.GetOrCreateLegend();
+                
                 chart.Plot(chartData, bottomAxis, leftAxis);
 
 
 
 
 
+                var row = sheet.CreateRow(0);
+                row.CreateCell(0, CellType.String).SetCellValue("x");
+                row.CreateCell(1, CellType.String).SetCellValue("y");
+                row.CreateCell(2, CellType.String).SetCellValue("z");
+                row.CreateCell(3, CellType.String).SetCellValue("Hx");
+                row.CreateCell(4, CellType.String).SetCellValue("Hy");
+                row.CreateCell(5, CellType.String).SetCellValue("Hz");
+                row.CreateCell(6, CellType.String).SetCellValue("Hsum");
+                row.Cells[0].CellStyle = bStylehead;
+
+                //filling the data
+                var rowsCounter = 1;
+
+                string fileName = @"C:\Users\Master\Documents\C_sharp\Work\wall_test.output";
+                var fileData = ReadFile(fileName);
+
+                foreach (var rowData in inputArray)
+                {
+                    var rowD = sheet.CreateRow(rowsCounter++);
+                    var dCounter = 0;
+                    foreach (var d in rowData)
+                    {
+                        rowD.CreateCell(dCounter++, CellType.Numeric).SetCellValue(Double.Parse(d.ToString().Replace(@".", @",")));
+                    }
+                }
+
+
+                
+                
+
+
                 wb.Write(stream);
+                
+                //wb.Close();
                 //file.Close();
             }
 
